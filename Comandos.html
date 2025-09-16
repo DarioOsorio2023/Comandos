@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Comandos Red Ufinet — Reference</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--muted:#94a3b8;--accent:#06b6d4;--glass: rgba(255,255,255,0.03)}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;background:linear-gradient(180deg,#071027 0%, #071827 100%);color:#e6eef6}
+    .app{max-width:1200px;margin:28px auto;padding:20px;}
+    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+    .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#0ea5a4);display:flex;align-items:center;justify-content:center;font-weight:700;color:#022;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+    h1{font-size:20px;margin:0}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+
+    .layout{display:grid;grid-template-columns:280px 1fr;gap:18px}
+    nav{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+    .search{display:flex;gap:8px;margin-bottom:12px}
+    input[type=text]{flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    button.btn{background:var(--accent);border:none;padding:8px 10px;border-radius:8px;color:#022;font-weight:600;cursor:pointer}
+    .toc{max-height:64vh;overflow:auto;padding-right:6px}
+    .toc a{display:block;color:var(--muted);text-decoration:none;padding:8px;border-radius:8px}
+    .toc a:hover{background:var(--glass);color:#fff}
+
+    main{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:18px;border-radius:12px;min-height:60vh}
+    .section{margin-bottom:20px}
+    .section h2{margin:0 0 8px 0;font-size:16px}
+    .card{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.02)}
+    pre{overflow:auto;margin:0;background:transparent;padding:8px;border-radius:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:#dbeafe}
+    .meta{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+    .chip{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px;font-size:12px;color:var(--muted)}
+    .actions{margin-left:auto;display:flex;gap:8px}
+    .small{font-size:12px;color:var(--muted)}
+
+    .row{display:flex;gap:12px;align-items:center}
+    .kbd{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px;font-family:ui-monospace,Menlo;font-size:12px}
+
+    footer{margin-top:12px;color:var(--muted);font-size:13px}
+
+    /* responsive */
+    @media (max-width:900px){.layout{grid-template-columns:1fr;}.toc{display:flex;gap:8px;overflow:auto}.logo{width:44px;height:44px}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="logo">UF</div>
+      <div>
+        <h1>Comandos Red Ufinet — Referencia</h1>
+        <p class="lead">Diseño interactivo para consultar comandos por plataforma. (RAX, ISCOM, Huawei, ASR, Core)</p>
+      </div>
+    </header>
+
+    <div class="layout">
+      <nav>
+        <div class="search">
+          <input id="q" type="text" placeholder="Buscar comando o palabra clave..." oninput="filterToc()" />
+          <button class="btn" onclick="clearSearch()">Limpiar</button>
+        </div>
+        <div class="toc" id="toc">
+          <a href="#rax">RAX 700 / 701 / 711</a>
+          <a href="#iscom">ISCOM 2924 / 2948</a>
+          <a href="#huawei">Huawei Nodo / UM</a>
+          <a href="#asrxe">ASR IOS XE</a>
+          <a href="#asrxr">ASR IOS XR</a>
+          <a href="#huawei-edge">Huawei Core / Edge</a>
+        </div>
+      </nav>
+
+      <main>
+        <div class="section" id="rax">
+          <div class="meta">
+            <div class="chip">RAX 700 - 701 - 711</div>
+            <div class="small">Comandos generales y de verificación</div>
+            <div class="actions">
+              <button class="btn" onclick="copyText('rax-commands')">Copiar todo</button>
+            </div>
+          </div>
+          <div class="card">
+            <pre id="rax-commands">show vlan  + (vlan)
+show interface  uni
+show interface  uni 1 description 
+show interface  nni 1 
+show interface  nni 1 description 
+show mac-address-table l2 vlan
+show transceiver ddm nni 1 
+show transceiver ddm nni 1-2 det
+show mac-address-table l2 vlan 1481
+show running-config interface uni 1
+show interface  statistics uni 1 dynamic detail
+show hw_monitor environment temperature   - para temperatura 
+show running-config interface - para ver en que modo esta el puerto 
+show bandwidth uni 1
+show bandwidth uni 1 vlan
+show bandwidth-profile 1
+show lldp remote nni 1 &lt;--- con este ubico el equipo vecino hacia donde pega el CPE que requiero
+show cpu-utilization --> Cuánto se usa de recurso a nivel de CPU 
+show environment --> Información del equipo 
+show hw_monitor --> Información del equipo 
+show interface uni 1 statistics dynamic  | i Speed
+show run | include rate - para ver limitante 1
+show run | include band  - para ver limitante de navegación 
+sho bandwidth uni 1 . para saber donde estoy 
+sho bandwidth uni 1 vlan - 
+
+clear interface uni 1 statistics   -> Para limpiar contadores de trafico y drops 
+clear mac-address-table all   -> para hacer clareo de Mac
+switchport trunk allowed vlan</pre>
+          </div>
+        </div>
+
+        <div class="section" id="iscom">
+          <div class="meta">
+            <div class="chip">ISCOM 2924 / 2948</div>
+            <div class="small">Comandos básicos y de inspección</div>
+            <div class="actions"><button class="btn" onclick="copyText('iscom-commands')">Copiar todo</button></div>
+          </div>
+          <div class="card">
+            <pre id="iscom-commands">show vlan + Vlan del servicio
+show interface  port-list +  los puertos 
+show interface  port-list + los puertos description 
+show transceiver ddm port-list + ( el puerto)
+show sho mac-address-table  l2 vlan + (vlan)
+show logging file | include port20 y si falla 
+show transceiver threshold-violations port-list + puerto 
+show bandwidth port-list 25 vlan  - Para ver entrada y salida del ancho de banda configurado 
+show bandwidth-profile 5  --> para ver el perfil del ancho de banda 
+show  link-aggregation <<<- Pendiente validar para que sirve</pre>
+          </div>
+        </div>
+
+        <div class="section" id="huawei">
+          <div class="meta">
+            <div class="chip">HUAWEI - Nodo / UM</div>
+            <div class="small">Diagnóstico, transceiver, VLANs y más</div>
+            <div class="actions"><button class="btn" onclick="copyText('huawei-commands')">Copiar todo</button></div>
+          </div>
+          <div class="card">
+            <pre id="huawei-commands">display ver   -  para ver el estado del equipo y si ha tenido reinicios 
+display interface description -  para ver en que puerto esta el cliente 
+display  interface description | include  + ID COCOORA10127400I  para ver 
+display current-configuration interface GigabitEthernet 0/0/2   -  este comando es para saber la vlan del servicio, en que modo esta el equipo 
+display vlan | inc + ID del servicio - para pedir que me filtre solo l de el ID 
+display mac-address vlan 2251 - sirve para poder ver el aprendizaje del servicio 
+display transceiver diagnosis interface GigabitEthernet 0/0/2  para ver las potencias en el puerto del cliente 
+display transceiver diagnosis interface XGigabitEthernet 0/0/4 - para poder ver las potencias desde el puerto de la interconexión 
+display logbuffer | include + puerto Giga
+display interface GigabitEthernet 0/0/2 -  para poder ver que tipo de cableado tiene el servicio, si es fibra o cobre 
+display interface XGigabitEthernet 0/0/4 - para poder ver que tipo de cableado tiene el servicio, si es fibra o cobre</pre>
+          </div>
+        </div>
+
+        <div class="section" id="asrxe">
+          <div class="meta">
+            <div class="chip">ASR — IOS XE</div>
+            <div class="small">Comandos para ver capacidad, pseudowires, tráfico y logs</div>
+            <div class="actions"><button class="btn" onclick="copyText('asrxe-commands')">Copiar todo</button></div>
+          </div>
+          <div class="card">
+            <pre id="asrxe-commands">show ver | in up  <-- para ver cuantos dias lleva arriba el equipo
+show run | be COCOPAR10087610C --> identificar la service instance que tiene el pseudowire [OP 1]
+show mpls l2 vc 5724412 detail --> Detalles del VC (Estado y último cambio y algún tunnel)
+show mpls l2transport  vc 502127501  detail | in change <--- para ver ultimo cambio en el vc 
+show xconnect all | in 5724412  --> Estado del pseudowire y la interface física 
+show interfaces Gi0/0/3 description --> Estado de la interface física 
+show ethernet service instance id 1017 interface Te0/0/4 stats  -> Para ver si hay paquetes de salida o de entrada en la itx o en la aggre 
+show interfaces Gi0/0/3 transceiver detail --> Potencias en la interface
+show interfaces Gi0/0/3 human-readable | in error|drops|rate --> Aumeto de errores y el tráfico por la interface 
+show  ethernet service instance id 1232 interface Te0/0/2 stats  --- Para mirar la entrada y salida de paquetes del servicio ( en degradaciones ) desde la ITX -
+show ethernet service instance id 2597 interface Gi0/0/7 stats <--- para ver entrada y salida de paquetes  
+show ethernet service instance id 2441 interface Gi0/0/3 stats  --> Aumento de paquetes en ambos sentidos 
+show mpls traffic-eng tunnels tunnel 5657 --> información del tunnel. Si está arriba y los últimos cambios.
+ping mpls traffic-eng tunnel 5657 --> Revisamos si hay pérdidas o los tiempos también
+ping mpls pseudowire 172.17.28.243 57233201 size 1000 repeat 1000  --> Revisar si a nivel de Pseudowire hay pérdidas en la red.
+traceroute 172.17.49.28 --> Traza hacia el peer con todos los saltos que puede tener 
+show ip route 172.17.49.28 --> Cambio en la ruta y las interfaces por las que sale
+traceroute mpls ipv4 172.17.26.37/32 source 172.16.30.244
+show logging | in 0/0/3 --> LOGS
+show clock -- > Reloj</pre>
+          </div>
+        </div>
+
+        <div class="section" id="asrxr">
+          <div class="meta">
+            <div class="chip">ASR — IOS XR</div>
+            <div class="small">Verificación de VC, interfaces, optics y BGP/route</div>
+            <div class="actions"><button class="btn" onclick="copyText('asrxr-commands')">Copiar todo</button></div>
+          </div>
+          <div class="card">
+            <pre id="asrxr-commands">show run formal | in NINIXPE10099812I --> Nos arroja el L2vpn en el que está configurado el pw-id 
+show run formal | in GTGTLIV10087484I
+show run l2vpn xconnect group L2VPN_SERVICES p2p L2VPN-COCOCEN10054148C --> Nos muestra la conf del pw-id y la interface física de la que venimos o a la que vamos 
+show interfaces TenGigE0/0/0/3.2156 des --> Estado de la interface y su descripción 
+show interfaces TenGigE0/0/0/3 des --> Estado de la interface y su descripción (Aquí muestra si va a un SW o es la ENNI)
+show interfaces TenGigE0/0/0/3 --> Vemos si hay incremento de paquetes e incremento de errores
+show l2vpn xconnect pw-id 5723204 detail | in change --> Detalles del VC (Estado y último cambio con mayor detalle) 
+ping mpls pseudowire 172.17.22.54 50281301 size 1000 repeat 1000  --> validamos la conexión con el otro extremo 
+ping mpls pseudowire 172.17.22.54 50281301 size 1000 repeat 1000 interval 19  --> validamos la conexión con el otro extremo con más detalle si llegamos a per perdidas 
+show controllers TenGigE0/0/0/34 phy --> Vemos las potencias en la interface 
+show logging | in 0/0/0/10 --> LOGS
+show version | include uptime --> Uptime
+show clock 
+show route 172.17.49.28 --> Vemos la interface por la que sale hacia ese equipo 
+show interfaces HundredGigE0/0/1/1 | in rate --> Vemos el tráfico que está pasando por esa interface
+monitor interface TenGigE0/1/0/4 TenGigE0/1/0/5
+show controllers optics 0/0/0/18 | in dBm
+ping mpls ipv4 172.17.49.99/32 source 172.17.49.48 repe 1000 si 1000
+show route vrf INTERNET 8.8.8.8 -- ruta hacia google
+show int TenGigE0/0/0/10 | i erro 
+show arp vrf INTERNET BVI1006 - para validar el ARP para mirar que si este aprendiendi, siempre debo mirar el 0/0/CPU0  porque es el más reciente 
+ping vrf INTERNET 8.8.8.8 source BVI1006 size 1000 repeat 1000  - es para hacer ping a google desde el equipo de borde o vrf
+ping vrf INTERNET 10.35.112.178 source 10.35.112.177 size 1000 repeat 1000  <- este es bueno cuando el servicio es de internet y la ip es privada Ipv4
+show controllers optics 0/0/0/18 | in dBm &lt;- para ver potencia de fibra</pre>
+          </div>
+        </div>
+
+        <div class="section" id="huawei-edge">
+          <div class="meta">
+            <div class="chip">Huawei Grande — Core / EDGE</div>
+            <div class="small">Comandos de BVI, ARP, ping VPN, VSI y mpls</div>
+            <div class="actions"><button class="btn" onclick="copyText('huawei-edge-commands')">Copiar todo</button></div>
+          </div>
+          <div class="card">
+            <pre id="huawei-edge-commands">Display interface description | include COCOVER10107377I <-- para ver la información de ID 
+display current-configuration interface Vbdif2641 (Esto es igual a una BVI -Vbdif-) <-  Esto es para ver el pool de IPs del cliente 
+display arp vpn-instance INTERNET  slot 0 dynamic | include Vbdif2641   <- para ver aprendizaje ARP 
+ping -vpn-instance INTERNET -brief -c 10 -s 1000 -m 20 -a  181.78.78.36  8.8.8.8 <- Para hacer la prueba de ping 
+
+display current-configuration | be COCOORA10010725I --> Me da la conf de las Vbdif (Es como la BVI en Cisco)
+display interface description | in COCOORA10010725I --> Me da el estado de la interface Vbdif
+display interface Vbdif 565 --> Adicional a la conf me dice el MTU, tiempo en línea y los rate (BVI en cisco)
+display arp vpn-instance INTERNET  slot 0 dynamic | include Vbdif565 --> Nos dice la tabla ARP que aprendemos para los pool de IPs que se tienen configuradas.
+ping -vpn-instance INTERNET 138.186.21.182 ip-forwarding --> ping a la IP del cliente
+ping -vpn-instance INTERNET 8.8.8.8 --> INTERNET o cualquier IP
+telnet vpn-instance INTERNET  (IP)  80  | abrir puerto 80 
+display ip routing-table vpn-instance INTERNET 8.8.8.8 | ver ruta a internet 
+display current-configuration | section include 565 --> Este me da la VSI que es como el pw o pseudowire en los cisco (me da el peer del que venimos y el VC)
+display vsi name VLAN565 verbose --> Nos dice el estado del VSI y si hubo cambios recientes asi como la creación del mismo 
+display vsi name VLAN565 peer-info --> Nos dice la info del peer y el estado más organizado 
+display mpls te tunnel | in 172.17.28.152 o 5756501 --> Con este vemos si hay un tunnel asociado a este VC 
+ping vpls vsi VLAN565 peer 172.17.28.152 --> Se hace ping al peer (Similar al ping mpls pseudowire)
+display ospf peer brief --> Ver vecinos ospf
+
+nuevos ++++
+
+display current-configuration interface Virtual-Ethernet 1/0/2.1734 -> PARA SACAR POL DE IPS CON LA VIRTUAL EDGE
+display arp vpn-instance INTERNET slot 1 dynamic | in 1/0/2.1734   <- PAR AMIRAR SI YA HAY APRENDIZAJE ARP DE LAS Ips
+ping -vpn-instance INTERNET -brief -c 100 -s 1400 -a 181.78.71.241 87.240.132.78
+display ospf interface verbose | in 172.20.135.237 tracert lsp ip 172.17.28.184 32   NO CONFIABLE tracert -a 172.17.28.248 172.17.28.184  CONFIABLE
+display ip routing-table vpn-instance INTERNET 181.78.11.0 24 longer-match
+ping -a 181.78.11.159 -vpn-instance INTERNET 8.8.8.8
+display bgp vpnv4 vpn-instance INTERNET routing-table 8.8.8.8</pre>
+          </div>
+        </div>
+
+        <footer>Exportable — copia rápida, búsqueda y navegación. ¿Quieres que lo convierta en PDF, PPTX o lo deje como plantilla descargable?</footer>
+      </main>
+    </div>
+  </div>
+
+  
+  <script>
+    function copyText(id){
+      const t = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(t)
+        .then(()=>{alert('Copiado al portapapeles')})
+        .catch(()=>{prompt('Copia manualmente:', t)});
+    }
+
+    function clearSearch(){
+      document.getElementById('q').value='';
+      filterToc();
+    }
+
+    function filterToc(){
+      const q = document.getElementById('q').value.toLowerCase();
+      const toc = document.getElementById('toc');
+      Array.from(toc.querySelectorAll('a')).forEach(a=>{
+        const show = a.innerText.toLowerCase().includes(q);
+        a.style.display = show ? 'block' : 'none';
+      });
+      document.querySelectorAll('main .section').forEach(sec=>{
+        const txt = sec.innerText.toLowerCase();
+        sec.style.display = txt.includes(q) ? 'block' : (q.trim()===''? 'block' : 'none');
+      });
+    }
+
+    // 🚀 Copiar automáticamente al seleccionar texto
+    document.addEventListener("DOMContentLoaded", ()=>{
+      document.querySelectorAll("pre").forEach(pre=>{
+        pre.addEventListener("mouseup", ()=>{
+          const selection = window.getSelection().toString().trim();
+          if(selection){
+            navigator.clipboard.writeText(selection)
+              .then(()=>console.log("Texto copiado:", selection))
+              .catch(()=>{});
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+
